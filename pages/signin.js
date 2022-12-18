@@ -1,13 +1,40 @@
-import { TextField, Typography, Box, Button } from "@mui/material";
-import React from "react";
+import { TextField, Typography, Box, Button, FormControl } from "@mui/material";
+import React, { useState } from "react";
 import { useCardData } from "../components/Context";
 import Router from "next/router";
+import validator from "validator";
 
 const Signin = () => {
   const { setIsSignedIn } = useCardData();
-  const handleSignIn = () => {
-    setIsSignedIn(true);
-    Router.push("/");
+  const [userName, setUserName] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorExists, setErrorExists] = useState(false);
+  const userNameError = "Please enter your email for UserName";
+  const passwordError =
+    "Please make sure that your password is minimum of length 8, and has letters and numbers";
+
+  const hasNumbers = (myString) => {
+    return /\d/.test(myString);
+  };
+  const hasLetters = (myString) => {
+    return /[a-z]/.test(myString);
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (
+      validator.isEmail(userName) &&
+      validator.isLength(password, { min: 8, max: 16 }) &&
+      hasLetters(password) &&
+      hasNumbers(password)
+    ) {
+      alert("Successfully Signed In");
+      setIsSignedIn(true);
+      Router.push("/");
+    } else {
+      console.log("Error is detected");
+      setErrorExists(true);
+    }
   };
   return (
     <Box
@@ -19,33 +46,46 @@ const Signin = () => {
         alignItems: "center",
       }}
     >
-      <Typography variant="h2" sx={{ fontWeight: "bold" }}>
-        Sign In
-      </Typography>
-      <Box
-        sx={{
-          width: "400px",
-          display: "flex",
-          flexDirection: "column",
-          gap: "20px",
-        }}
-      >
-        <TextField
-          fullWidth
-          id="login"
-          variant="outlined"
-          size="small"
-          placeholder="User Name"
-        />
-        <TextField
-          fullWidth
-          id="password"
-          variant="outlined"
-          size="small"
-          placeholder="Password"
-        />
-      </Box>
-      <Button onClick={handleSignIn}>Sign In</Button>
+      <FormControl onSubmit={handleSubmit}>
+        <Typography variant="h2" sx={{ fontWeight: "bold" }}>
+          Sign In
+        </Typography>
+        <Box
+          sx={{
+            width: "400px",
+            display: "flex",
+            flexDirection: "column",
+            gap: "20px",
+          }}
+        >
+          <TextField
+            fullWidth
+            id="login"
+            variant="outlined"
+            size="small"
+            placeholder="User Name"
+            onChange={(e) => {
+              setUserName(e.target.value);
+              setErrorExists(false);
+            }}
+          />
+          <TextField
+            fullWidth
+            id="password"
+            variant="outlined"
+            size="small"
+            placeholder="Password"
+            onChange={(e) => {
+              setPassword(e.target.value);
+              setErrorExists(false);
+            }}
+          />
+        </Box>
+        <Button type="submit" disabled={errorExists}>
+          Sign In
+        </Button>
+      </FormControl>
+      {errorExists && "Please check the inputs"}
     </Box>
   );
 };

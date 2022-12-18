@@ -1,12 +1,8 @@
-import Head from "next/head";
-import Image from "next/image";
-import styles from "../styles/Home.module.css";
-import Card from "../components/Card";
-import { Box } from "@mui/system";
 import { useEffect } from "react";
 import CardList from "../components/CardList";
 import { useCardData } from "../components/Context";
 import Router from "next/router";
+// import { GetServerSideProps } from "next/types";
 
 export default function Home() {
   const { isSignedIn } = useCardData();
@@ -17,7 +13,17 @@ export default function Home() {
   }, []);
   return (
     <>
-      (<CardList />)
+      <CardList />
     </>
   );
 }
+
+// export async function GetServerSideProps(context) {
+//   if (!isSignedIn) {
+//     return {
+//       redirect: {
+//         destination: "/signin",
+//       },
+//     };
+//   }
+// }

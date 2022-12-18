@@ -1,29 +1,30 @@
 import React, { useContext, useState, useEffect } from "react";
 import axios from "axios";
 const cardDataContext = React.createContext();
+// Context is designed to share data that can be considered “global” for a tree of React components ...
 
-const cardData = [
-  {
-    header: "FIrst header",
-    body: "FIrst body",
-    id: 1,
-  },
-  {
-    header: "Second header",
-    body: "Second body",
-    id: 2,
-  },
-  {
-    header: "Third header",
-    body: "Third body",
-    id: 3,
-  },
-  {
-    header: "Fourth header",
-    body: "Fourth body",
-    id: 4,
-  },
-];
+// const cardData = [
+//   {
+//     header: "FIrst header",
+//     body: "FIrst body",
+//     id: 1,
+//   },
+//   {
+//     header: "Second header",
+//     body: "Second body",
+//     id: 2,
+//   },
+//   {
+//     header: "Third header",
+//     body: "Third body",
+//     id: 3,
+//   },
+//   {
+//     header: "Fourth header",
+//     body: "Fourth body",
+//     id: 4,
+//   },
+// ];
 
 export const CardDataProvider = ({ children }) => {
   const [allCards, setAllCards] = useState([]);
@@ -66,6 +67,13 @@ export const CardDataProvider = ({ children }) => {
     setReadOnly: () => setReadOnly(!readOnly),
     isSignedIn,
     setIsSignedIn: (value) => setIsSignedIn(value),
+    setCheckedCard: (checkedCard) =>
+      setCheckedCards((prev) => [...prev, checkedCard]),
+    setUncheckedCard: (uncheckedCard) =>
+      setCheckedCards((prev) =>
+        prev.filter((eachCard) => uncheckedCard != eachCard)
+      ),
+    checkedCards,
   };
 
   return (

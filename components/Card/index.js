@@ -9,8 +9,9 @@ import CardBody from "./CardBody";
 import CardButtons from "./CardButtons";
 
 const Card = ({ origHeader, origBody, id, setCardsToDelete }) => {
-  const { readOnly } = useCardData();
-  const [checked, setChecked] = useState(false);
+  const { readOnly, setCheckedCard, setUncheckedCard, checkedCards } =
+    useCardData();
+  const [checked, setChecked] = useState(checkedCards.includes(id));
   // the state of our checkbox is initially unchecked. Used, e.g., for background colour
   // in ternary operator.
   const [header, setHeader] = useState(origHeader);
@@ -64,8 +65,10 @@ const Card = ({ origHeader, origBody, id, setCardsToDelete }) => {
 
   useEffect(() => {
     if (checked) {
+      setCheckedCard(id);
       setCardsToDelete((prev) => [...prev, id]);
     } else {
+      setUncheckedCard(id);
       setCardsToDelete((prev) => prev.filter((singleId) => singleId != id));
     }
   }, [checked]);
@@ -99,7 +102,11 @@ const Card = ({ origHeader, origBody, id, setCardsToDelete }) => {
         <Box sx={{ display: "flex", flexDirection: "column" }}>
           <Box sx={{ width: 1 }}>
             {edit ? null : (
-              <Checkbox onClick={handleCheckBoxClick} disabled={readOnly} />
+              <Checkbox
+                onClick={handleCheckBoxClick}
+                disabled={readOnly}
+                checked={checked}
+              />
             )}
             <CardHeader
               header={header}
