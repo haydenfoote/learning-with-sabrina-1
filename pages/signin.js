@@ -36,6 +36,11 @@ const Signin = () => {
       setErrorExists(true);
     }
   };
+  const handleClearAll = () => {
+    setUserName("");
+    setPassword("");
+    setErrorExists(false);
+  };
   return (
     <Box
       sx={{
@@ -46,7 +51,7 @@ const Signin = () => {
         alignItems: "center",
       }}
     >
-      <FormControl onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}>
         <Typography variant="h2" sx={{ fontWeight: "bold" }}>
           Sign In
         </Typography>
@@ -64,6 +69,7 @@ const Signin = () => {
             variant="outlined"
             size="small"
             placeholder="User Name"
+            value={userName}
             onChange={(e) => {
               setUserName(e.target.value);
               setErrorExists(false);
@@ -75,17 +81,21 @@ const Signin = () => {
             variant="outlined"
             size="small"
             placeholder="Password"
+            value={password}
             onChange={(e) => {
               setPassword(e.target.value);
               setErrorExists(false);
             }}
           />
         </Box>
+        {errorExists && (
+          <Typography sx={{ color: "red" }}>Please check the inputs</Typography>
+        )}
         <Button type="submit" disabled={errorExists}>
           Sign In
         </Button>
-      </FormControl>
-      {errorExists && "Please check the inputs"}
+        <Button onClick={handleClearAll}>Clear All</Button>
+      </form>
     </Box>
   );
 };
