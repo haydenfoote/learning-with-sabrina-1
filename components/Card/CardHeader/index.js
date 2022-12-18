@@ -4,6 +4,7 @@ import { TextField } from "@mui/material";
 const CardHeader = (props) => {
   return (
     <TextField
+      fullWidth
       id="header"
       variant="outlined"
       size="small"

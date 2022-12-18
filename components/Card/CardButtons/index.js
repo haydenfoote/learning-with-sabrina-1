@@ -14,11 +14,11 @@ const CardButtons = ({
   return (
     <>
       {edit ? (
-        <Box>
-          <Button sx={{ display: "flex" }} onClick={handleSaveButton}>
-            <TfiSave size={40} />
+        <Box sx={{ display: "flex", gap: "15px", justifyContent: "center" }}>
+          <Button onClick={handleSaveButton}>
+            <TfiSave size={35} />
           </Button>
-          <Button sx={{ display: "flex" }} onClick={handleCancelButton}>
+          <Button onClick={handleCancelButton}>
             <BsBoxArrowInUpLeft size={40} />
           </Button>
         </Box>

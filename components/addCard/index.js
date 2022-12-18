@@ -1,29 +1,22 @@
 import { TextField, Button, Box } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
-
-const AddCard = ({ setNewCard, setSubmitCard }) => {
+import { useCardData } from "../Context";
+const AddCard = ({ setSubmitCard }) => {
+  const { addCard } = useCardData();
   const [header, setHeader] = useState("");
   const [body, setBody] = useState("");
-  const [cardAdded, setCardAdded] = useState(false);
 
   const addNewCard = () => {
+    addCard({
+      header: header,
+      body: body,
+      id: uuidv4(),
+    });
     setSubmitCard(true);
-    setCardAdded(true);
+    setHeader(""); // just returning back to empty field ...
+    setBody("");
   };
-
-  useEffect(() => {
-    if (cardAdded) {
-      setNewCard({
-        header: header,
-        body: body,
-        id: uuidv4(),
-      });
-      setHeader("");
-      setBody("");
-      setCardAdded(false);
-    }
-  }, [cardAdded]);
 
   return (
     <Box sx={{ width: "400px", height: "300px" }}>

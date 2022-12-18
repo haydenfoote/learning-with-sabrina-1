@@ -3,35 +3,14 @@ import { Box } from "@mui/system";
 import Card from "../Card";
 import NavBar from "../NavBar";
 import AddCard from "../addCard";
+import { useCardData } from "../Context";
 
 const CardList = () => {
+  const { allCards, removeCard, addCard } = useCardData();
   const [cardsToDelete, setCardsToDelete] = useState([]); //pushing new IDs here of checked cards. Sending prop to Cards ...
-  const [deleteCard, setDeleteCard] = useState(false); /// true or false based on click of handle delete
-  const [addCard, setAddCard] = useState(false);
-  const [newCard, setNewCard] = useState({});
+  const [isDeleteCard, setIsDeleteCard] = useState(false); /// true or false based on click of handle delete
+  const [isAddCard, setIsAddCard] = useState(false);
   const [submitCard, setSubmitCard] = useState(false);
-  const [allCards, setAllCards] = useState([
-    {
-      header: "FIrst header",
-      body: "FIrst body",
-      id: 1,
-    },
-    {
-      header: "Second header",
-      body: "Second body",
-      id: 2,
-    },
-    {
-      header: "Third header",
-      body: "Third body",
-      id: 3,
-    },
-    {
-      header: "Fourth header",
-      body: "Fourth body",
-      id: 4,
-    },
-  ]);
 
   // whenever useState changes, component will re-render (what has changed)
 
@@ -41,41 +20,37 @@ const CardList = () => {
   };
 
   const handleDeleteCard = () => {
-    setDeleteCard(true);
+    setIsDeleteCard(true);
   };
 
   const handleAddCard = () => {
-    setAddCard(true);
+    setIsAddCard(true);
   };
 
   useEffect(() => {
-    if (deleteCard) {
-      setAllCards((prev) =>
-        prev.filter((eachCard) => !cardsToDelete.includes(eachCard.id))
-      );
-      setDeleteCard(false);
+    if (isDeleteCard) {
+      removeCard(cardsToDelete);
+      setIsDeleteCard(false);
     }
-  }, [deleteCard]);
+  }, [isDeleteCard]);
   // useEffect listens to the delete card ...
 
   useEffect(() => {
-    if (addCard && submitCard) {
-      setAllCards((prev) => [...prev, newCard]);
-      setAddCard(false);
+    if (isAddCard && submitCard) {
+      setIsAddCard(false);
       setSubmitCard(false);
     }
-  }, [addCard, submitCard]);
-  //useEffect is listening to addCard and submitCard
+  }, [isAddCard, submitCard]);
+  //useEffect is listening to isAddCard
 
+  console.log(allCards);
   return (
     <Box sx={styles}>
       <NavBar
         handleDeleteCard={handleDeleteCard}
         handleAddCard={handleAddCard}
       />
-      {addCard && (
-        <AddCard setNewCard={setNewCard} setSubmitCard={setSubmitCard} />
-      )}
+      {isAddCard && <AddCard setSubmitCard={setSubmitCard} />}
 
       {allCards.map((eachItem) => {
         return (

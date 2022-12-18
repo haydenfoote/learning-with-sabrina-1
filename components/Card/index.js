@@ -3,12 +3,13 @@ import { Box, Button, TextField, Grid, Typography } from "@mui/material";
 import { Checkbox, FormControlLabel } from "@mui/material";
 import { color, palette } from "@mui/system";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-
+import { useCardData } from "../Context";
 import CardHeader from "./CardHeader";
 import CardBody from "./CardBody";
 import CardButtons from "./CardButtons";
 
 const Card = ({ origHeader, origBody, id, setCardsToDelete }) => {
+  const { readOnly } = useCardData();
   const [checked, setChecked] = useState(false);
   // the state of our checkbox is initially unchecked. Used, e.g., for background colour
   // in ternary operator.
@@ -24,9 +25,6 @@ const Card = ({ origHeader, origBody, id, setCardsToDelete }) => {
   // we need a state to indicate whether editing is disabled.  Initial state us disabled.
   const [edit, setEdit] = useState(false);
   // we need a state to indiciate whether we are in edit mode. Initially we are not.
-  const [readOnly, setReadOnly] = useState(false);
-
-  const [disableButton, setDisableButton] = useState(false);
 
   // we need a function to handle the edit button ...
   const handleEditButton = () => {
@@ -34,11 +32,6 @@ const Card = ({ origHeader, origBody, id, setCardsToDelete }) => {
     setEdit(true);
     setChecked(false);
   };
-  // we need a function to handle the buttons to disabled and not editable ...
-  // const handleButtons = () => {
-  //   setDisabled(true);
-  //   setEdit(false);
-  // };
 
   const handleSaveButton = () => {
     setOriginalHeader(header);
@@ -63,13 +56,6 @@ const Card = ({ origHeader, origBody, id, setCardsToDelete }) => {
     setChecked(!checked);
   };
 
-  const handleReadOnly = () => {
-    setReadOnly(!readOnly);
-    setDisableButton(!disableButton);
-    setDisabled(true);
-    setEdit(false);
-  };
-
   // handleBodyChange takes the event from the onChange property in the text field ...
   // ... and updates the state of the body state.
   const handleBodyChange = (e) => {
@@ -85,10 +71,6 @@ const Card = ({ origHeader, origBody, id, setCardsToDelete }) => {
   }, [checked]);
 
   useEffect(() => {
-    // edit
-    //   ? console.log("checkbox is not here")
-    //   : console.log("checkbox is  here");
-
     if (edit) {
       console.log("checkbox is not here");
     } else {
@@ -96,29 +78,35 @@ const Card = ({ origHeader, origBody, id, setCardsToDelete }) => {
     }
   }, [edit]);
 
+  useEffect(() => {
+    setEdit(false);
+  }, [readOnly]);
+
   return (
-    <Grid sx={{ p: 10 }}>
-      <FormControlLabel
-        label="readOnly"
-        control={<Checkbox onClick={handleReadOnly} />}
-      />
+    <Grid sx={{ width: "500px", padding: "15px" }}>
       <Box
         sx={{
-          p: 10,
-          border: "8px solid black",
+          border: "2px solid black",
           color: "primary.light",
-          width: "500px",
+          padding: "15px",
           display: "flex",
           backgroundColor: checked ? "teal" : "white",
           gap: "30px",
+          flexDirection: "column",
+          width: 1,
         }}
       >
         <Box sx={{ display: "flex", flexDirection: "column" }}>
-          <CardHeader
-            header={header}
-            disabled={disabled}
-            handleHeaderChange={handleHeaderChange}
-          />
+          <Box sx={{ width: 1 }}>
+            {edit ? null : (
+              <Checkbox onClick={handleCheckBoxClick} disabled={readOnly} />
+            )}
+            <CardHeader
+              header={header}
+              disabled={disabled}
+              handleHeaderChange={handleHeaderChange}
+            />
+          </Box>
           <CardBody
             body={body}
             disabled={disabled}
@@ -130,11 +118,8 @@ const Card = ({ origHeader, origBody, id, setCardsToDelete }) => {
           handleSaveButton={handleSaveButton}
           handleCancelButton={handleCancelButton}
           handleEditButton={handleEditButton}
-          disableButton={disableButton}
+          disableButton={readOnly}
         />
-        {edit ? null : (
-          <Checkbox onClick={handleCheckBoxClick} disabled={disableButton} />
-        )}
       </Box>
     </Grid>
   );
