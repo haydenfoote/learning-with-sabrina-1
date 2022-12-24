@@ -1,18 +1,21 @@
 import { TextField, Button, Box } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { useCardData } from "../Context";
+import { addCard } from "../../store/cardslice";
+import { useDispatch } from "react-redux";
 const AddCard = ({ setSubmitCard }) => {
-  const { addCard } = useCardData();
+  const dispatch = useDispatch();
   const [header, setHeader] = useState("");
   const [body, setBody] = useState("");
 
   const addNewCard = () => {
-    addCard({
-      header: header,
-      body: body,
-      id: uuidv4(),
-    });
+    dispatch(
+      addCard({
+        header: header,
+        body: body,
+        id: uuidv4(),
+      })
+    );
     setSubmitCard(true);
     setHeader(""); // just returning back to empty field ...
     setBody("");
