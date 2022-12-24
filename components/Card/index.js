@@ -7,10 +7,13 @@ import { useCardData } from "../Context";
 import CardHeader from "./CardHeader";
 import CardBody from "./CardBody";
 import CardButtons from "./CardButtons";
+import { useDispatch, useSelector } from "react-redux";
+import { checkCard, uncheckCard } from "../../store/cardslice";
 
-const Card = ({ origHeader, origBody, id, setCardsToDelete }) => {
-  const { readOnly, setCheckedCard, setUncheckedCard, checkedCards } =
-    useCardData();
+const Card = ({ origHeader, origBody, id }) => {
+  const { isReadOnly, checkedCards } = useSelector((state) => state.cardsInfo);
+  const dispatch = useDispatch();
+  // const { readOnly, setCheckedCard, setUncheckedCard, checkedCards } = useCardData();
   const [checked, setChecked] = useState(checkedCards.includes(id));
   // the state of our checkbox is initially unchecked. Used, e.g., for background colour
   // in ternary operator.
@@ -65,11 +68,9 @@ const Card = ({ origHeader, origBody, id, setCardsToDelete }) => {
 
   useEffect(() => {
     if (checked) {
-      setCheckedCard(id);
-      setCardsToDelete((prev) => [...prev, id]);
+      dispatch(checkCard(id)); // dispatch is accessing store functions/reducers ... selector accesses state
     } else {
-      setUncheckedCard(id);
-      setCardsToDelete((prev) => prev.filter((singleId) => singleId != id));
+      dispatch(uncheckCard(id));
     }
   }, [checked]);
 
@@ -83,7 +84,7 @@ const Card = ({ origHeader, origBody, id, setCardsToDelete }) => {
 
   useEffect(() => {
     setEdit(false);
-  }, [readOnly]);
+  }, [isReadOnly]);
 
   return (
     <Grid sx={{ width: "500px", padding: "15px" }}>
@@ -104,7 +105,7 @@ const Card = ({ origHeader, origBody, id, setCardsToDelete }) => {
             {edit ? null : (
               <Checkbox
                 onClick={handleCheckBoxClick}
-                disabled={readOnly}
+                disabled={isReadOnly}
                 checked={checked}
               />
             )}
@@ -125,7 +126,7 @@ const Card = ({ origHeader, origBody, id, setCardsToDelete }) => {
           handleSaveButton={handleSaveButton}
           handleCancelButton={handleCancelButton}
           handleEditButton={handleEditButton}
-          disableButton={readOnly}
+          disableButton={isReadOnly}
         />
       </Box>
     </Grid>

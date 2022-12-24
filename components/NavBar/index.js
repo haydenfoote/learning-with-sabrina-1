@@ -2,14 +2,19 @@ import React, { useState } from "react";
 import { Button, Box } from "@mui/material";
 import { useCardData } from "../Context";
 import { useRouter } from "next/router";
-
-const NavBar = ({ handleDeleteCard, handleAddCard }) => {
+import { useDispatch, useSelector } from "react-redux";
+import { removeCard, setIsReadOnly } from "../../store/cardslice";
+const NavBar = ({ handleAddCard }) => {
   const router = useRouter();
-  const { setReadOnly, readOnly } = useCardData();
+  const isReadOnly = useSelector((state) => state.cardsInfo.isReadOnly);
   const handleReadOnly = () => {
-    setReadOnly();
+    dispatch(setIsReadOnly());
   };
+  const dispatch = useDispatch();
 
+  const handleDeleteCard = () => {
+    dispatch(removeCard());
+  };
   const handleHomeClick = () => {
     router.push("/");
   };
@@ -26,14 +31,14 @@ const NavBar = ({ handleDeleteCard, handleAddCard }) => {
       <Box>
         <Button
           onClick={handleReadOnly}
-          variant={readOnly ? "contained" : "text"}
+          variant={isReadOnly ? "contained" : "text"}
         >
           Read Only
         </Button>
-        <Button onClick={handleDeleteCard} display="flex" disabled={readOnly}>
+        <Button onClick={handleDeleteCard} display="flex" disabled={isReadOnly}>
           Delete Cards
         </Button>
-        <Button onClick={handleAddCard} display="flex" disabled={readOnly}>
+        <Button onClick={handleAddCard} display="flex" disabled={isReadOnly}>
           Add Card
         </Button>
       </Box>
