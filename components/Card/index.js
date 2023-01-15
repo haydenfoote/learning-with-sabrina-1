@@ -88,6 +88,7 @@ const Card = ({ origHeader, origBody, id }) => {
 
   return (
     <Grid sx={{ width: "500px", padding: "15px" }}>
+      <Typography variant="h5">Card Component</Typography>
       <Box
         sx={{
           border: "2px solid black",

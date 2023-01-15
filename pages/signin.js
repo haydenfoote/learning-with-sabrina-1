@@ -55,6 +55,7 @@ const Signin = () => {
         <Typography variant="h2" sx={{ fontWeight: "bold" }}>
           Sign In
         </Typography>
+        <Typography variant="h5">Pages\signin.js</Typography>
         <Box
           sx={{
             width: "400px",
@@ -75,6 +76,10 @@ const Signin = () => {
               setErrorExists(false);
             }}
           />
+          <Typography variant="h6">
+            onChange setUserName state is set and setErrorExists state set to
+            false
+          </Typography>
           <TextField
             fullWidth
             id="password"

@@ -1,4 +1,4 @@
-import { TextField, Button, Box } from "@mui/material";
+import { TextField, Button, Box, Typography } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { addCard } from "../../store/cardslice";
@@ -23,6 +23,7 @@ const AddCard = ({ setSubmitCard }) => {
 
   return (
     <Box sx={{ width: "400px", height: "300px" }}>
+      <Typography variant="h6">addCard component</Typography>
       <TextField
         id="header"
         placeholder="Enter header"

@@ -5,6 +5,7 @@ import NavBar from "../NavBar";
 import AddCard from "../addCard";
 import { useCardData } from "../Context";
 import { useSelector } from "react-redux";
+import { Typography } from "@mui/material";
 
 const CardList = () => {
   const cardsCollection = useSelector(
@@ -41,12 +42,16 @@ const CardList = () => {
   //useEffect is listening to isAddCard
   return (
     <Box sx={styles}>
+      <Typography variant="h6">NavBar is called ...</Typography>
       <NavBar handleAddCard={handleAddCard} />
       {isAddCard && <AddCard setSubmitCard={setSubmitCard} />}
 
       {cardsCollection.map((eachItem) => {
         return (
           <Box key={eachItem.id}>
+            <Typography variant="h6">
+              CardList component calls Card component
+            </Typography>
             <Card
               origHeader={eachItem.header}
               origBody={eachItem.body}

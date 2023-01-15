@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Box } from "@mui/material";
+import { Button, Box, Typography } from "@mui/material";
 import { useCardData } from "../Context";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
@@ -25,6 +25,7 @@ const NavBar = ({ handleAddCard }) => {
   return (
     <>
       <Box>
+        <Typography variant="h6">NavBar component has 3 x buttons</Typography>
         <Button onClick={handleHomeClick}>Home</Button>
         <Button onClick={handleSignOutClick}>Sign Out</Button>
       </Box>
