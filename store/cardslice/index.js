@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { getData } from "../../api/getData";
 
 const initialState = {
   cardsCollection: [],
@@ -8,21 +9,7 @@ const initialState = {
   status: null,
 };
 export const fetchData = createAsyncThunk("cardsInfo/fetchData", async () => {
-  return new Promise((resolve, reject) => {
-    axios
-      .get(
-        "https://raw.githubusercontent.com/BrunnerLivio/PokemonDataGraber/master/output.json"
-      )
-      .then((res) => {
-        resolve(
-          res.data.splice(0, 15).map((eachItem) => ({
-            header: eachItem.Name,
-            body: eachItem.About,
-            id: eachItem.Number,
-          }))
-        );
-      });
-  });
+  getData();
 });
 
 export const CardsSlice = createSlice({
@@ -59,15 +46,26 @@ export const CardsSlice = createSlice({
   },
   extraReducers: (builder) => {
     // Add reducers for additional action types here, and handle loading state as needed
-    builder.addCase(fetchData.fulfilled, (state, action) => {
-      // Add user to the state array
-      state.cardsCollection = action.payload;
-    }),
-      builder.addCase(fetchData.pending, (state) => {
+    builder
+      .addCase(fetchData.fulfilled, (state, action) => {
+        // Add user to the state array
+        state.status = "success";
+        state.cardsCollection = action.payload;
+      })
+      .addCase(fetchData.pending, (state) => {
         state.status = "pending";
-      }),
-      builder.addCase(fetchData.rejected, (state) => {
+      })
+      .addCase(fetchData.rejected, (state) => {
         state.status = "rejected";
+      })
+      .addDefaultCase((state, action) => {
+        state.cardsCollection = [
+          {
+            Header: "Card1",
+            Body: "Body of Card1",
+            Id: "01",
+          },
+        ];
       });
   },
 });
