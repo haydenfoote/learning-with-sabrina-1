@@ -56,6 +56,7 @@ export const CardDataProvider = ({ children }) => {
   useEffect(() => {
     getData();
   }, []);
+
   const value = {
     allCards,
     addCard: (newCard) => setAllCards((prev) => [...prev, newCard]),

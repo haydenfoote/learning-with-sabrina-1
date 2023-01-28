@@ -6,9 +6,11 @@ import AddCard from "../addCard";
 import { useCardData } from "../Context";
 import { useSelector } from "react-redux";
 import { Typography } from "@mui/material";
+import { useAppSelector, useAppDispatch } from "../../store";
 
 const CardList = () => {
-  const cardsCollection = useSelector(
+  // create a subscription to the Redux store ...
+  const cardsCollection = useAppSelector(
     (state) => state.cardsInfo.cardsCollection
   );
   const [isDeleteCard, setIsDeleteCard] = useState(false); /// true or false based on click of handle delete

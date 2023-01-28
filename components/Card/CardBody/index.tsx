@@ -1,7 +1,13 @@
 import React from "react";
 import { TextField, Typography } from "@mui/material";
 
-const CardBody = (props) => {
+type TProps = {
+  body: string;
+  disabled: boolean;
+  handleBodyChange: (arg0: React.ChangeEvent<HTMLInputElement>) => void;
+};
+
+const CardBody = (props: TProps) => {
   return (
     <>
       <Typography variant="h6">Cardbody component</Typography>

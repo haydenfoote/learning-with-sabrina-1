@@ -3,6 +3,7 @@ import CardList from "../components/CardList";
 import { useCardData } from "../components/Context";
 import Router from "next/router";
 import { Typography } from "@mui/material";
+import React from "react";
 // import { GetServerSideProps } from "next/types";
 
 export default function Home() {

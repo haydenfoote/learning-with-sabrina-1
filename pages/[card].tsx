@@ -1,14 +1,15 @@
 // dynamic routes. card.js will show different info for each card.
 import { Button } from "@mui/material";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Card from "../components/Card";
 import { GetStaticProps } from "next";
 import { useSelector } from "react-redux";
+import { useAppSelector, useAppDispatch } from "../store";
 
 const CardPreview = () => {
   const router = useRouter();
-  const cardsCollection = useSelector(
+  const cardsCollection = useAppSelector(
     (state) => state.cardsInfo.cardsCollection
   );
   const id = router.query.card;
@@ -16,10 +17,6 @@ const CardPreview = () => {
   const handleClick = () => {
     router.push("/");
   };
-  //   useEffect(() => {
-
-  //     setCard(card);
-  //   }, []);
   console.log("This is card: ", card);
 
   return (
@@ -33,4 +30,5 @@ const CardPreview = () => {
     </>
   );
 };
+
 export default CardPreview;

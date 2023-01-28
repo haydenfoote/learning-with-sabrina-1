@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "axios"; // Promis based HTTP client for the browser and node.js
 export const getData = async () => {
   return new Promise((resolve) => {
     axios

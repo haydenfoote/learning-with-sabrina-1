@@ -1,7 +1,13 @@
 import React from "react";
 import { TextField } from "@mui/material";
 
-const CardHeader = (props) => {
+type TProps = {
+  header: string;
+  disabled: boolean;
+  handleHeaderChange: (arg0: React.ChangeEvent<HTMLInputElement>) => void;
+};
+
+const CardHeader = (props: TProps) => {
   return (
     <TextField
       fullWidth

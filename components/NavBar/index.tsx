@@ -1,16 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, FC } from "react";
 import { Button, Box, Typography } from "@mui/material";
 import { useCardData } from "../Context";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { removeCard, setIsReadOnly } from "../../store/cardslice";
-const NavBar = ({ handleAddCard }) => {
+import { useAppSelector, useAppDispatch } from "../../store";
+
+interface IProps {
+  handleAddCard: () => void;
+}
+
+const NavBar: FC<IProps> = ({ handleAddCard }) => {
   const router = useRouter();
-  const isReadOnly = useSelector((state) => state.cardsInfo.isReadOnly);
+  const isReadOnly = useAppSelector((state) => state.cardsInfo.isReadOnly);
+  const dispatch = useAppDispatch();
+
   const handleReadOnly = () => {
     dispatch(setIsReadOnly());
   };
-  const dispatch = useDispatch();
 
   const handleDeleteCard = () => {
     dispatch(removeCard());
@@ -36,10 +43,10 @@ const NavBar = ({ handleAddCard }) => {
         >
           Read Only
         </Button>
-        <Button onClick={handleDeleteCard} display="flex" disabled={isReadOnly}>
+        <Button onClick={handleDeleteCard} disabled={isReadOnly}>
           Delete Cards
         </Button>
-        <Button onClick={handleAddCard} display="flex" disabled={isReadOnly}>
+        <Button onClick={handleAddCard} disabled={isReadOnly}>
           Add Card
         </Button>
       </Box>

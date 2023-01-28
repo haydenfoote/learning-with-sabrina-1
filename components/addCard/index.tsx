@@ -1,10 +1,17 @@
 import { TextField, Button, Box, Typography } from "@mui/material";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, FC } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { addCard } from "../../store/cardslice";
 import { useDispatch } from "react-redux";
-const AddCard = ({ setSubmitCard }) => {
-  const dispatch = useDispatch();
+import { useAppSelector, useAppDispatch } from "../../store";
+
+interface IProps {
+  setSubmitCard: (arg0: boolean) => void;
+}
+// interface props is a helper for defining the types in the FC args.
+
+const AddCard: FC<IProps> = ({ setSubmitCard }) => {
+  const dispatch = useAppDispatch();
   const [header, setHeader] = useState("");
   const [body, setBody] = useState("");
 

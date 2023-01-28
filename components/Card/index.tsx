@@ -1,18 +1,23 @@
-import React, { useState, useEffect } from "react";
-import { Box, Button, TextField, Grid, Typography } from "@mui/material";
-import { Checkbox, FormControlLabel } from "@mui/material";
-import { color, palette } from "@mui/system";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
-import { useCardData } from "../Context";
+import React, { useState, useEffect, FC } from "react";
+import { Box, Grid, Typography } from "@mui/material";
+import { Checkbox } from "@mui/material";
 import CardHeader from "./CardHeader";
 import CardBody from "./CardBody";
 import CardButtons from "./CardButtons";
-import { useDispatch, useSelector } from "react-redux";
 import { checkCard, uncheckCard } from "../../store/cardslice";
+import { useAppSelector, useAppDispatch } from "../../store";
 
-const Card = ({ origHeader, origBody, id }) => {
-  const { isReadOnly, checkedCards } = useSelector((state) => state.cardsInfo);
-  const dispatch = useDispatch();
+interface IProps {
+  origHeader: string;
+  origBody: string;
+  id: string;
+}
+
+const Card: FC<IProps> = ({ origHeader, origBody, id }) => {
+  const { isReadOnly, checkedCards } = useAppSelector(
+    (state) => state.cardsInfo
+  );
+  const dispatch = useAppDispatch();
   // const { readOnly, setCheckedCard, setUncheckedCard, checkedCards } = useCardData();
   const [checked, setChecked] = useState(checkedCards.includes(id));
   // the state of our checkbox is initially unchecked. Used, e.g., for background colour
@@ -52,17 +57,17 @@ const Card = ({ origHeader, origBody, id }) => {
   };
 
   // handleHeaderChange takes the event from the onChange property in the header field;
-  const handleHeaderChange = (e) => {
+  const handleHeaderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setHeader(e.target.value);
   };
-
+  // (e: React.ChangeEvent<HTMLInputElement>) => void
   const handleCheckBoxClick = () => {
     setChecked(!checked);
   };
 
   // handleBodyChange takes the event from the onChange property in the text field ...
   // ... and updates the state of the body state.
-  const handleBodyChange = (e) => {
+  const handleBodyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setBody(e.target.value);
   };
 

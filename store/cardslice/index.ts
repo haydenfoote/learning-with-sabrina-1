@@ -2,14 +2,27 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { getData } from "../../api/getData";
 
-const initialState = {
+export type CardType = {
+  id: string;
+  header: string;
+  body: string;
+};
+
+type InitialStateProps = {
+  cardsCollection: CardType[];
+  checkedCards: string[];
+  isReadOnly: boolean;
+  status: null | string;
+};
+
+const initialState: InitialStateProps = {
   cardsCollection: [],
   checkedCards: [],
   isReadOnly: false,
   status: null,
 };
 export const fetchData = createAsyncThunk("cardsInfo/fetchData", async () => {
-  getData();
+  return getData();
 });
 
 export const CardsSlice = createSlice({
@@ -22,7 +35,7 @@ export const CardsSlice = createSlice({
     addCard: (state, action) => {
       state.cardsCollection = [...state.cardsCollection, action.payload];
     },
-    removeCard: (state, action) => {
+    removeCard: (state) => {
       state.cardsCollection = state.cardsCollection.filter(
         (card) => !state.checkedCards.includes(card.id)
       );
@@ -61,9 +74,9 @@ export const CardsSlice = createSlice({
       .addDefaultCase((state, action) => {
         state.cardsCollection = [
           {
-            Header: "Card1",
-            Body: "Body of Card1",
-            Id: "01",
+            header: "Card1",
+            body: "Body of Card1",
+            id: "01",
           },
         ];
       });

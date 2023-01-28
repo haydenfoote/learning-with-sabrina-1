@@ -21,7 +21,7 @@ const PageNotFound = () => {
         gap: "20px",
       }}
     >
-      <Image src={NotFoundImg} width={300} height={250} />
+      <Image src={NotFoundImg} width={300} height={250} alt="404 image" />
       <Typography variant="h3">Page Not Found</Typography>
       <Button onClick={handleClick}>Go Home</Button>
     </Box>

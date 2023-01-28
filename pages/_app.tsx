@@ -1,8 +1,11 @@
 import "../styles/globals.css";
+import React from "react";
 import { CardDataProvider } from "../components/Context";
 import { Provider } from "react-redux";
 import { store } from "../store";
-function MyApp({ Component, pageProps }) {
+import { AppProps } from "next/app";
+
+function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   return (
     <CardDataProvider>
       <Provider store={store}>
