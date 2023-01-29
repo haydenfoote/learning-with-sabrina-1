@@ -3,8 +3,11 @@ import React, { useState } from "react";
 import { useCardData } from "../components/Context";
 import Router from "next/router";
 import validator from "validator";
+import { useAppDispatch } from "../store";
+import { setUser } from "../store/userslice";
 
 const Signin = () => {
+  const dispatch = useAppDispatch();
   const { setIsSignedIn } = useCardData();
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
@@ -13,14 +16,14 @@ const Signin = () => {
   const passwordError =
     "Please make sure that your password is minimum of length 8, and has letters and numbers";
 
-  const hasNumbers = (myString) => {
+  const hasNumbers = (myString: string) => {
     return /\d/.test(myString);
   };
-  const hasLetters = (myString) => {
+  const hasLetters = (myString: string) => {
     return /[a-z]/.test(myString);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (
       validator.isEmail(userName) &&
@@ -28,7 +31,25 @@ const Signin = () => {
       hasLetters(password) &&
       hasNumbers(password)
     ) {
-      alert("Successfully Signed In");
+      if (userName.trim() === "admin@gmail.com" && password === "12345admin") {
+        dispatch(
+          setUser({
+            name: userName,
+            authorised: true,
+            status: "success",
+            role: "admin",
+          })
+        );
+      } else {
+        dispatch(
+          setUser({
+            name: userName,
+            authorised: true,
+            status: "success",
+            role: "simple_user",
+          })
+        );
+      }
       setIsSignedIn(true);
       Router.push("/");
     } else {

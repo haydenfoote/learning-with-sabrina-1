@@ -1,18 +1,18 @@
 import { useEffect } from "react";
 import CardList from "../components/CardList";
-import { useCardData } from "../components/Context";
 import Router from "next/router";
 import { Typography } from "@mui/material";
 import React from "react";
+import { useAppSelector } from "../store";
 // import { GetServerSideProps } from "next/types";
 
 export default function Home() {
-  const { isSignedIn } = useCardData();
+  const authorised = useAppSelector((state) => state.user.authorised);
   useEffect(() => {
-    if (!isSignedIn) {
+    if (!authorised) {
       Router.push("/signin");
     }
-  }, [isSignedIn]);
+  }, [authorised]);
   return (
     <>
       <Typography variant="h6">

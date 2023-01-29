@@ -18,11 +18,34 @@ type InitialStateProps = {
 const initialState: InitialStateProps = {
   cardsCollection: [],
   checkedCards: [],
-  isReadOnly: false,
+  isReadOnly:
+    typeof window !== "undefined"
+      ? JSON.parse(window.localStorage.getItem("readOnly")!)
+      : false,
   status: null,
 };
-export const fetchData = createAsyncThunk("cardsInfo/fetchData", async () => {
-  return getData();
+export const fetchData = createAsyncThunk<
+  CardType[],
+  void,
+  { fulfilledMeta: any }
+>("cardsInfo/fetchData", async (_, { rejectWithValue, fulfillWithValue }) => {
+  try {
+    const response = axios.get(
+      "https://raw.githubusercontent.com/BrunnerLivio/PokemonDataGraber/master/output.json"
+    );
+
+    const allData = (await response).data
+      .splice(0, 15)
+      .map((eachItem: any) => ({
+        header: eachItem.Name,
+        body: eachItem.About,
+        id: eachItem.Number,
+      })) as CardType[];
+
+    return fulfillWithValue(allData, null);
+  } catch (e) {
+    return rejectWithValue(e.response);
+  }
 });
 
 export const CardsSlice = createSlice({

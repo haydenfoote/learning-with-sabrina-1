@@ -18,7 +18,7 @@ const CardList = () => {
   const [submitCard, setSubmitCard] = useState(false);
 
   // whenever useState changes, component will re-render (what has changed)
-
+  console.log(cardsCollection);
   const styles = {
     display: "flex",
     flexDirection: "column",
@@ -48,7 +48,7 @@ const CardList = () => {
       <NavBar handleAddCard={handleAddCard} />
       {isAddCard && <AddCard setSubmitCard={setSubmitCard} />}
 
-      {cardsCollection.map((eachItem) => {
+      {/* {cardsCollection.map((eachItem) => {
         return (
           <Box key={eachItem.id}>
             <Typography variant="h6">
@@ -61,7 +61,7 @@ const CardList = () => {
             />
           </Box>
         );
-      })}
+      })} */}
     </Box>
   );
 };
