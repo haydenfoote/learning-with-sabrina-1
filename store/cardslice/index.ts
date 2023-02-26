@@ -24,24 +24,23 @@ const initialState: InitialStateProps = {
       : false,
   status: null,
 };
+
 export const fetchData = createAsyncThunk<
   CardType[],
   void,
   { fulfilledMeta: any }
 >("cardsInfo/fetchData", async (_, { rejectWithValue, fulfillWithValue }) => {
   try {
-    const response = axios.get(
+    const response = await axios.get(
       "https://raw.githubusercontent.com/BrunnerLivio/PokemonDataGraber/master/output.json"
     );
-
-    const allData = (await response).data
-      .splice(0, 15)
-      .map((eachItem: any) => ({
-        header: eachItem.Name,
-        body: eachItem.About,
-        id: eachItem.Number,
-      })) as CardType[];
-
+    console.log(response);
+    const allData = response.data.splice(0, 15).map((eachItem: any) => ({
+      header: eachItem.Name,
+      body: eachItem.About,
+      id: eachItem.Number,
+    })) as CardType[];
+    console.log(allData);
     return fulfillWithValue(allData, null);
   } catch (e) {
     return rejectWithValue(e.response);
@@ -85,6 +84,7 @@ export const CardsSlice = createSlice({
     builder
       .addCase(fetchData.fulfilled, (state, action) => {
         // Add user to the state array
+        console.log("fullfilled");
         state.status = "success";
         state.cardsCollection = action.payload;
       })
