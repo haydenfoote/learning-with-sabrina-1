@@ -45,7 +45,7 @@ const CardList = () => {
       setSubmitCard(false);
     }
   }, [isAddCard, submitCard]);
-  //useEffect is listening to isAddCard
+  //useEffect is listening to isAddCard and submitCard in dependency array
   return (
     <>
       <Box sx={styles}>
