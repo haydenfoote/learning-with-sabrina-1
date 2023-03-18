@@ -4,7 +4,7 @@ import { CardDataProvider } from "../components/Context";
 import { Provider } from "react-redux";
 import { store } from "../store";
 import { AppProps } from "next/app";
-import "./editor.css";
+//import "./editor.css";
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   return (

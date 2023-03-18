@@ -2,9 +2,21 @@ import { Button, TextField, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
 import { useRouter } from "next/router";
+import useSWR, { Fetcher } from "swr";
+import Axios from "axios";
+
+type User = {
+  username: string;
+  role: string;
+  id: string;
+};
+
+const fetcher: Fetcher<User[], string> = (arg) =>
+  Axios.get(arg).then((res) => res.data);
 
 const About = () => {
   const router = useRouter();
+  const { data, error } = useSWR("/api/database/show", fetcher);
 
   const reactNotes = [
     {
@@ -64,6 +76,9 @@ const About = () => {
   ];
 
   const handleGoBack = () => router.push("/");
+  if (!data && !error) {
+    return <Box>Please wait...</Box>;
+  }
 
   return (
     <Box>
@@ -108,6 +123,30 @@ const About = () => {
             ) : (
               <Typography>{eachItem.description}</Typography>
             )}
+          </Box>
+        ))}
+      </Box>
+      <Box display="flex" justifyContent="center" padding="6px">
+        <Typography variant="h3" fontWeight="600">
+          Current users
+        </Typography>
+      </Box>
+
+      <Box
+        sx={{ border: "2px solid grey", borderRadius: "10px" }}
+        display="flex"
+        justifyContent="center"
+        gap="20px"
+        paddingTop="10px"
+      >
+        {data?.map((user) => (
+          <Box
+            key={user.id}
+            sx={{ border: "1px solid blue", borderRadius: "10px" }}
+            padding="8px"
+          >
+            <Typography>{user.username}</Typography>
+            <Typography>{user.role}</Typography>
           </Box>
         ))}
       </Box>
